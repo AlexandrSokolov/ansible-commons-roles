@@ -15,13 +15,16 @@ roles_path=roles:~/.ansible/common_roles
 ### Features:
 
 - [Change the current folder to the Ansible directory](#change-the-current-folder-to-the-ansible-directory)
+- [Insert one template after another](#to-insert-one-template-after-another)
+- [Generate Java class from a template](#to-generate-java-class-from-a-template-and-put-it-into-the-correct-package-path)
+- [Possible issues](#issues)
 
 
 #### Change the current folder to the Ansible directory
 
 Add into the bash script:
 
-1. When project does not exist yet:
+1. When project does not exist yet extract and pass `$artifact_id` to the `changePwd2AnsibleScriptsFolder`:
 
 ```bash
 #!/usr/bin/env bash
@@ -57,4 +60,48 @@ ansible-playbook \
 ```
 
 
-#### fds
+#### To insert one template after another
+
+```yaml
+- name: "Update the root `pom.xml` file with git url"
+  include_role:
+    name: insert_template_after_another
+  with_items:
+    - path: "{{ app_basedir }}/pom.xml"
+      insert_after_template: "{{ role_path }}/templates/insert_after_template.j2"
+      insert_template: "{{ role_path }}/templates/insert_template.j2"
+```
+
+#### To generate Java class from a template and put it into the correct package path
+
+In the Java template specify package path via `{{ group_id }}` variable:
+```j2
+package {{ group_id }}.app;
+```
+
+In the Ansible script use `{{ group_id_path }}` when specify the destination for java:
+```yaml
+- name: "Generate java classes of `domain` module"
+  include_role:
+    name: gen_java_class_from_template
+  with_items:
+    - src: domain/src/main/java/ApplicationService.java.j2
+      dst: "{{ app_basedir }}/domain/src/main/java/{{ group_id_path }}/app/ApplicationService.java"
+    - src: domain/src/main/resources/META-INF/beans.xml
+      dst: "{{ app_basedir }}/domain/src/main/resources/META-INF/beans.xml"
+```
+
+### Issues:
+
+You get an error: `ERROR! the role 'someRoleName' was not found in ...`
+
+Make sure that:
+
+1. `~/.ansible/common_roles` is included in the error message in the list of paths for search. 
+To make the folder searchable it must be included in the `roles_path`:
+```yaml
+roles_path=roles:~/.ansible/common_roles
+```
+
+2. Commons roles are up-to-date. If you added a new common role or renamed existing, 
+   run: `./scripts/extendScripsAndAnsibleRolesPaths.sh`
