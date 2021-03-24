@@ -1,0 +1,8 @@
+---
+- name: Insert block of text after another in the file
+  shell: >-
+    java
+    -jar {{ role_path }}/../../files/insert-unique-after.jar
+    --path {{ item.path }}
+    --insert-after "{{ item.insert_after }}"
+    --insert-text "{{ item.insert_text }}"

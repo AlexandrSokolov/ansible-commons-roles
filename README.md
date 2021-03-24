@@ -16,6 +16,7 @@ roles_path=roles:~/.ansible/common_roles
 
 - [Change the current folder to the Ansible directory](#change-the-current-folder-to-the-ansible-directory)
 - [Insert one template after another](#to-insert-one-template-after-another)
+- [Insert text after another](#to-insert-text-after-another)
 - [Generate Java class from a template](#to-generate-java-class-from-a-template-and-put-it-into-the-correct-package-path)
 - [Possible issues](#issues)
 
@@ -70,6 +71,25 @@ ansible-playbook \
     - path: "{{ app_basedir }}/pom.xml"
       insert_after_template: "{{ role_path }}/templates/insert_after_template.j2"
       insert_template: "{{ role_path }}/templates/insert_template.j2"
+```
+
+#### To insert text after another
+
+The following examples inserts after `</apache-commons-logging.version>` the line
+with a line break, and
+the 2nd line, which starts with 4 spaces and ends with
+`<jackson.version>{{ jackson_version }}</jackson.version>`
+
+```yaml
+- name: "Update the deps `pom.xml` jackson version"
+  include_role:
+    name: insert_text_after_another
+  with_items:
+    - path: "{{ app_basedir }}/deps/pom.xml"
+      insert_after: "</apache-commons-logging.version>"
+      insert_text: |4
+
+              <jackson.version>{{ jackson_version }}</jackson.version>
 ```
 
 #### To generate Java class from a template and put it into the correct package path
