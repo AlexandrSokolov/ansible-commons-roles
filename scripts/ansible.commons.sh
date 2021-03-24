@@ -14,7 +14,7 @@ function changePwd2AnsibleScriptsFolder() {
   # set the application basedir
   local app_folder_name=$1
   # do net mark variable as 'local', it is a return value for this function!
-  app_basedir=${pwd_path}/${app_folder_name}
+  app_basedir=$( [ -z "${app_folder_name}" ] && echo "${pwd_path}" || echo "${pwd_path}/${app_folder_name}")
   echo "The application basedir '${app_basedir}'"
 
   local ansible_scripts_location=`dirname "$0"`

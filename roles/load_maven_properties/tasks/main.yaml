@@ -1,0 +1,18 @@
+---
+- name: Extracting project properties from Maven pom.xml
+  include_tasks: load_mvn_properties.yaml
+  with_items:
+    - xpath: "/ns:project/ns:groupId"
+      name: group_id
+    - xpath: "/ns:project/ns:artifactId"
+      name: artifact_id
+    - xpath: "/ns:project/ns:version"
+      name: version
+    - xpath: "/ns:project/ns:name"
+      name: project_name
+    - xpath: "/ns:project/ns:organization/ns:url"
+      name: organization_url
+
+- name: "Set `group_id_path` variable from `group_id`"
+  set_fact:
+    group_id_path: "{{ group_id | replace('.', '/') }}"

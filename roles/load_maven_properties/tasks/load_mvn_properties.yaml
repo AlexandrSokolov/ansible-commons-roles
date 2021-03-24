@@ -1,0 +1,13 @@
+---
+- name: Loading project variables from the parent Maven pom.xml
+  xml:
+    path: "{{ app_basedir }}/pom.xml"
+    namespaces:
+      ns: "http://maven.apache.org/POM/4.0.0"
+    xpath: "{{ item.xpath }}"
+    content: text
+  register: xml_element_value_reg
+
+- name: "Set project name"
+  set_fact:
+    "{{ item.name }}": "{{ xml_element_value_reg.matches[0].values() | first }}"

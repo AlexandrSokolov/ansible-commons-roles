@@ -90,6 +90,20 @@ In the Ansible script use `{{ group_id_path }}` when specify the destination for
     - src: domain/src/main/resources/META-INF/beans.xml
       dst: "{{ app_basedir }}/domain/src/main/resources/META-INF/beans.xml"
 ```
+Note how the `app` is used in the java class as part of the package name and in the Ansible script as part of the path.
+For `{{ group_id }}.x.y.z` package, the path should look like: `{{ group_id_path }}/x/y/z`.
+
+**Note** this role suites not only for Java classes. 
+It is very usefull with all file types, when the destination might not exist when you run it.
+The role automatically creates all required folders according to the `dst` path.
+
+#### Load all maven properties into the project
+
+```yaml
+- name: "Loading projects properties"
+  include_role:
+    name: load_maven_properties
+```
 
 ### Issues:
 
