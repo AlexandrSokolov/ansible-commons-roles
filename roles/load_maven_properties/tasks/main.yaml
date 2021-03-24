@@ -5,13 +5,21 @@
     - xpath: "/ns:project/ns:groupId"
       name: group_id
     - xpath: "/ns:project/ns:artifactId"
-      name: artifact_id
+      name: artifact_id_parent
     - xpath: "/ns:project/ns:version"
       name: version
     - xpath: "/ns:project/ns:name"
-      name: project_name
+      name: project_name_parent
     - xpath: "/ns:project/ns:organization/ns:url"
       name: organization_url
+
+- name: "Set `artifact_id` variable from `artifact_id_parent`"
+  set_fact:
+    artifact_id: "{{ artifact_id_parent | replace('-parent', '') }}"
+
+- name: "Set `project_name` variable from `project_name_parent`"
+  set_fact:
+    project_name: "{{ project_name_parent | replace(' Parent', '') }}"
 
 - name: "Set `group_id_path` variable from `group_id`"
   set_fact:
