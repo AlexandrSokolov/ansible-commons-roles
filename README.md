@@ -127,15 +127,28 @@ The role automatically creates all required folders according to the `dst` path.
 
 ### Issues:
 
-You get an error: `ERROR! the role 'someRoleName' was not found in ...`
+- You get an error: `ERROR! the role 'someRoleName' was not found in ...`
 
-Make sure that:
+   Make sure that:
+   
+   1. `~/.ansible/common_roles` is included in the error message in the list of paths for search. 
+   To make the folder searchable it must be included in the `roles_path`:
+   ```yaml
+   roles_path=roles:~/.ansible/common_roles
+   ```
+   
+   2. Commons roles are up-to-date. If you added a new common role or renamed existing, 
+      run: `./scripts/extendScripsAndAnsibleRolesPaths.sh`
 
-1. `~/.ansible/common_roles` is included in the error message in the list of paths for search. 
-To make the folder searchable it must be included in the `roles_path`:
-```yaml
-roles_path=roles:~/.ansible/common_roles
-```
+- You get an error: `"msg": "The target XML source '.../pom.xml' does not exist."`
+  
+   You run the script not within the project base directory. That is the folder with the parent `pom.xml` in it.
 
-2. Commons roles are up-to-date. If you added a new common role or renamed existing, 
-   run: `./scripts/extendScripsAndAnsibleRolesPaths.sh`
+- You get an error: `"msg": "Xpath /ns:project/ns:organization/ns:url does not reference a node!"`
+  
+  You run the script not within the project base directory. That is the folder with the parent `pom.xml` in it. 
+  But you run the script from the folder with `pom.xml`, which is not parent `pom.xml`
+  
+- You get ant error, related to `ansible.commons.sh` script. 
+  
+  Make sure you installed commons ansible roles and scripts. See requirements above.
