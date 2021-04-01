@@ -1,0 +1,49 @@
+---
+
+- debug:
+    msg: "input data file_2_handle: {{ file_2_handle }}"
+
+- set_fact:
+    file_template_path: "{{ file_2_handle.src | dirname }}/"
+
+- set_fact:
+    file_name_2_handle: "{{ file_2_handle.src | replace(file_template_path, '') | replace('.j2', '') }}"
+
+- block:
+
+  - shell: "head -1 {{ file_2_handle.src }}"
+    register: package_line_stdout
+
+  - set_fact:
+      actual_package: "{{ package_line_stdout.stdout | replace('package {{ group_id }}', group_id) |  replace(';', '') }}"
+
+  - set_fact:
+      java_dst: "{{ item.dst_src_path }}/src/main/java/{{ actual_package | replace('.', '/') }}"
+
+  - debug:
+      msg:
+       - "source to template: {{ file_2_handle.src }}"
+       - "dst to java: {{ java_dst }}/{{ file_name_2_handle }}"
+
+  - include_role:
+      name: gen_java_class_from_template
+    with_items:
+      - src: "{{ file_2_handle.src }}"
+        dst: "{{ java_dst }}/{{ file_name_2_handle }}"
+
+  when: file_2_handle.src.endswith('java.j2')
+
+- block:
+
+    - debug:
+        msg:
+          - "source to template: {{ file_2_handle.src }}"
+          - "dst to file: {{ item.dst_src_path }}/{{ file_2_handle.path | replace('.j2', '') }}  }}"
+
+    - include_role:
+        name: gen_java_class_from_template
+      with_items:
+        - src: "{{ file_2_handle.src }}"
+          dst: "{{ item.dst_src_path }}/{{ file_2_handle.path | replace('.j2', '') }}"
+
+  when: not file_2_handle.src.endswith('java.j2')

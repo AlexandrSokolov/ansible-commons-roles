@@ -1,0 +1,25 @@
+---
+- debug:
+    msg: "input data: {{ item }}"
+
+#- name: Show file names
+#  debug:
+#    msg:
+#      - "source: {{ file_2_handle }}"
+#  with_filetree: "{{ item }}"
+#  when: file_2_handle.state == 'file'
+#  loop_control:
+#    loop_var: file_2_handle
+
+#- name: "Loading projects properties"
+#  include_role:
+#    name: load_maven_properties
+
+
+
+- name: Pass file to subtask
+  include_tasks: tasks/gen_single_java_class.yaml
+  with_filetree: "{{ item.src }}"
+  when: file_2_handle.state == 'file'
+  loop_control:
+    loop_var: file_2_handle
