@@ -71,6 +71,8 @@ ansible-playbook \
     - path: "{{ app_basedir }}/pom.xml"
       insert_after_template: "{{ role_path }}/templates/insert_after_template.j2"
       insert_template: "{{ role_path }}/templates/insert_template.j2"
+  loop_control:
+    loop_var: cs_itaa_tmpl_item
 ```
 
 #### To insert text after another
@@ -90,6 +92,8 @@ the 2nd line, which starts with 4 spaces and ends with
           </apache-commons-logging.version>
        insert_text: |4
                <jackson.version>{{ jackson_version }}</jackson.version>
+  loop_control:
+    loop_var: cs_itaa_txt_item
 ```
 
 #### To generate Java class from a template and put it into the correct package path

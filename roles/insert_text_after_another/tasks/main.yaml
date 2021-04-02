@@ -3,6 +3,6 @@
   shell: >-
     java
     -jar {{ role_path }}/../../files/insert-unique-after.jar
-    --path {{ item.path }}
-    --insert-after "{{ item.insert_after }}"
-    --insert-text "{{ item.insert_text }}"
+    --path {{ cs_itaa_txt_item.path }}
+    --insert-after "{{ cs_itaa_txt_item.insert_after }}"
+    --insert-text "{{ cs_itaa_txt_item.insert_text }}"

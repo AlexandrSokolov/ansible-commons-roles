@@ -2,17 +2,17 @@
 - name: Insert one template after another in the file debug message
   debug:
     msg:
-      - "File to update: '{{ item.path }}'"
+      - "File to update: '{{ cs_itaa_tmpl_item.path }}'"
       - "Search template:"
-      - "{{ lookup('template', '{{ item.insert_after_template }}') }}"
+      - "{{ lookup('template', '{{ cs_itaa_tmpl_item.insert_after_template }}') }}"
       - "Insert template:"
-      - "{{ lookup('template', '{{ item.insert_template }}') }}"
+      - "{{ lookup('template', '{{ cs_itaa_tmpl_item.insert_template }}') }}"
     verbosity: 1
 
 - name: Insert one template after another in the file
   shell: >-
     java
     -jar {{ role_path }}/../../files/insert-unique-after.jar
-    --path {{ item.path }}
-    --insert-after '{{ lookup('template', '{{ item.insert_after_template }}') }}'
-    --insert-text '{{ lookup('template', '{{ item.insert_template }}') }}'
+    --path {{ cs_itaa_tmpl_item.path }}
+    --insert-after '{{ lookup('template', '{{ cs_itaa_tmpl_item.insert_after_template }}') }}'
+    --insert-text '{{ lookup('template', '{{ cs_itaa_tmpl_item.insert_template }}') }}'

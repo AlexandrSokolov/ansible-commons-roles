@@ -15,4 +15,6 @@ the 2nd line, which starts with 4 spaces and ends with
         </apache-commons-logging.version>
       insert_text: |4
               <jackson.version>{{ jackson_version }}</jackson.version>
+  loop_control:
+    loop_var: cs_itaa_txt_item
 ```
