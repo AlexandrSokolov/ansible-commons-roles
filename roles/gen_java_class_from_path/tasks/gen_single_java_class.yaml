@@ -1,49 +1,55 @@
 ---
 
 - debug:
-    msg: "input data file_2_handle: {{ file_2_handle }}"
+    msg: "Single template 2 to generate Java class from it: {{ cs_gjcfp_file_2_handle }}"
+    verbosity: 1
 
 - set_fact:
-    file_template_path: "{{ file_2_handle.src | dirname }}/"
+    file_template_path: "{{ cs_gjcfp_file_2_handle.src | dirname }}/"
 
 - set_fact:
-    file_name_2_handle: "{{ file_2_handle.src | replace(file_template_path, '') | replace('.j2', '') }}"
+    file_name_2_handle: "{{ cs_gjcfp_file_2_handle.src | replace(file_template_path, '') | replace('.j2', '') }}"
 
 - block:
 
-  - shell: "head -1 {{ file_2_handle.src }}"
+  - shell: "head -1 {{ cs_gjcfp_file_2_handle.src }}"
     register: package_line_stdout
 
   - set_fact:
       actual_package: "{{ package_line_stdout.stdout | replace('package {{ group_id }}', group_id) |  replace(';', '') }}"
 
   - set_fact:
-      java_dst: "{{ item.dst_src_path }}/src/main/java/{{ actual_package | replace('.', '/') }}"
+      java_dst: "{{ cs_gjcfp_templates.dst_src_path }}/src/main/java/{{ actual_package | replace('.', '/') }}"
 
   - debug:
       msg:
-       - "source to template: {{ file_2_handle.src }}"
-       - "dst to java: {{ java_dst }}/{{ file_name_2_handle }}"
+       - "Source to template: {{ cs_gjcfp_file_2_handle.src }}"
+       - "Destination to real java class: {{ java_dst }}/{{ file_name_2_handle }}"
+      verbosity: 1
 
   - include_role:
       name: gen_java_class_from_template
     with_items:
-      - src: "{{ file_2_handle.src }}"
+      - src: "{{ cs_gjcfp_file_2_handle.src }}"
         dst: "{{ java_dst }}/{{ file_name_2_handle }}"
+    loop_control:
+      loop_var: cs_gjcft_item
 
-  when: file_2_handle.src.endswith('java.j2')
+  when: cs_gjcfp_file_2_handle.src.endswith('java.j2')
 
 - block:
 
     - debug:
         msg:
-          - "source to template: {{ file_2_handle.src }}"
-          - "dst to file: {{ item.dst_src_path }}/{{ file_2_handle.path | replace('.j2', '') }}  }}"
+          - "Source to template: {{ cs_gjcfp_file_2_handle.src }}"
+          - "Destination to real file: {{ cs_gjcfp_templates.dst_src_path }}/{{ cs_gjcfp_file_2_handle.path | replace('.j2', '') }}  }}"
 
     - include_role:
         name: gen_java_class_from_template
       with_items:
-        - src: "{{ file_2_handle.src }}"
-          dst: "{{ item.dst_src_path }}/{{ file_2_handle.path | replace('.j2', '') }}"
+        - src: "{{ cs_gjcfp_file_2_handle.src }}"
+          dst: "{{ cs_gjcfp_templates.dst_src_path }}/{{ cs_gjcfp_file_2_handle.path | replace('.j2', '') }}"
+      loop_control:
+        loop_var: cs_gjcft_item
 
-  when: not file_2_handle.src.endswith('java.j2')
+  when: not cs_gjcfp_file_2_handle.src.endswith('java.j2')

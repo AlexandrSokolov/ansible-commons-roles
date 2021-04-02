@@ -109,6 +109,8 @@ In the Ansible script use `{{ group_id_path }}` when specify the destination for
       dst: "{{ app_basedir }}/domain/src/main/java/{{ group_id_path }}/app/ApplicationService.java"
     - src: domain/src/main/resources/META-INF/beans.xml
       dst: "{{ app_basedir }}/domain/src/main/resources/META-INF/beans.xml"
+  loop_control:
+    loop_var: cs_gjcft_item
 ```
 Note how the `app` is used in the java class as part of the package name and in the Ansible script as part of the path.
 For `{{ group_id }}.x.y.z` package, the path should look like: `{{ group_id_path }}/x/y/z`.
@@ -123,6 +125,21 @@ The role automatically creates all required folders according to the `dst` path.
 - name: "Loading projects properties"
   include_role:
     name: load_maven_properties
+```
+
+#### Generate the whole Maven module with java and non-java templates
+
+```yaml
+- name: "Generate sources of `rest_api` and `rest_web` modules"
+  include_role:
+    name: gen_java_class_from_path
+  with_items:
+    - src: "{{ role_path }}/templates/rest_api"
+      dst_src_path: "{{ app_basedir }}/rest_api"
+    - src: "{{ role_path }}/templates/rest_web"
+      dst_src_path: "{{ app_basedir }}/rest_web"
+  loop_control:
+    loop_var: cs_gjcfp_templates
 ```
 
 ### Issues:

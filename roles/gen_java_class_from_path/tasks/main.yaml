@@ -1,25 +1,13 @@
 ---
 - debug:
-    msg: "input data: {{ item }}"
+    msg:
+      - "Source: {{ cs_gjcfp_templates.src }}"
+      - "Destination folder: {{ cs_gjcfp_templates.dst_src_path }}"
+    verbosity: 1
 
-#- name: Show file names
-#  debug:
-#    msg:
-#      - "source: {{ file_2_handle }}"
-#  with_filetree: "{{ item }}"
-#  when: file_2_handle.state == 'file'
-#  loop_control:
-#    loop_var: file_2_handle
-
-#- name: "Loading projects properties"
-#  include_role:
-#    name: load_maven_properties
-
-
-
-- name: Pass file to subtask
+- name: Pass template to subtask
   include_tasks: tasks/gen_single_java_class.yaml
-  with_filetree: "{{ item.src }}"
-  when: file_2_handle.state == 'file'
+  with_filetree: "{{ cs_gjcfp_templates.src }}"
+  when: cs_gjcfp_file_2_handle.state == 'file'
   loop_control:
-    loop_var: file_2_handle
+    loop_var: cs_gjcfp_file_2_handle

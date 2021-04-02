@@ -1,15 +1,15 @@
 ---
-- name: "Create '{{ item.dst | dirname }}' folder"
+- name: "Create '{{ cs_gjcft_item.dst | dirname }}' folder"
   file:
     state: directory
-    path: "{{ item.dst | dirname }}"
+    path: "{{ cs_gjcft_item.dst | dirname }}"
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"
 
-- name: "Adjust '{{ item.src }}' into '{{ item.dst }}'"
+- name: "Adjust '{{ cs_gjcft_item.src }}' into '{{ cs_gjcft_item.dst }}'"
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dst }}"
+    src: "{{ cs_gjcft_item.src }}"
+    dest: "{{ cs_gjcft_item.dst }}"
     mode: 0644
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"
