@@ -17,6 +17,8 @@ roles_path=roles:~/.ansible/common_roles
 - [Change the current folder to the Ansible directory](#change-the-current-folder-to-the-ansible-directory)
 - [Insert one template after another](#to-insert-one-template-after-another)
 - [Insert text after another](#to-insert-text-after-another)
+- [Load all maven properties into the project](#load-all-maven-properties-into-the-project)
+- [Generate maven module](#generate-the-whole-maven-module-with-java-and-non-java-templates)
 - [Generate Java class from a template](#to-generate-java-class-from-a-template-and-put-it-into-the-correct-package-path)
 - [Possible issues](#issues)
 
@@ -96,6 +98,31 @@ the 2nd line, which starts with 4 spaces and ends with
     loop_var: cs_itaa_txt_item
 ```
 
+#### Load all maven properties into the project
+
+```yaml
+- name: "Loading projects properties"
+  include_role:
+    name: load_maven_properties
+```
+
+#### Generate the whole Maven module with java and non-java templates
+
+```yaml
+- name: "Generate sources of `rest_api` and `rest_web` modules"
+  include_role:
+    name: gen_java_class_from_path
+  with_items:
+    - src: "{{ role_path }}/templates/rest_api"
+      dst_src_path: "{{ app_basedir }}/rest_api"
+    - src: "{{ role_path }}/templates/rest_web"
+      dst_src_path: "{{ app_basedir }}/rest_web"
+  loop_control:
+    loop_var: cs_gjcfp_templates
+```
+
+Note: depends on `load_maven_properties`. See `gen_java_class_from_path/README.md`
+
 #### To generate Java class from a template and put it into the correct package path
 
 In the Java template specify package path via `{{ group_id }}` variable:
@@ -122,29 +149,6 @@ For `{{ group_id }}.x.y.z` package, the path should look like: `{{ group_id_path
 **Note** this role suites not only for Java classes. 
 It is very usefull with all file types, when the destination might not exist when you run it.
 The role automatically creates all required folders according to the `dst` path.
-
-#### Load all maven properties into the project
-
-```yaml
-- name: "Loading projects properties"
-  include_role:
-    name: load_maven_properties
-```
-
-#### Generate the whole Maven module with java and non-java templates
-
-```yaml
-- name: "Generate sources of `rest_api` and `rest_web` modules"
-  include_role:
-    name: gen_java_class_from_path
-  with_items:
-    - src: "{{ role_path }}/templates/rest_api"
-      dst_src_path: "{{ app_basedir }}/rest_api"
-    - src: "{{ role_path }}/templates/rest_web"
-      dst_src_path: "{{ app_basedir }}/rest_web"
-  loop_control:
-    loop_var: cs_gjcfp_templates
-```
 
 ### Issues:
 
