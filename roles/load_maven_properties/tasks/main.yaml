@@ -12,6 +12,8 @@
       name: project_name_parent
     - xpath: "/ns:project/ns:organization/ns:url"
       name: organization_url
+  loop_control:
+    loop_var: cs_lmp_xml_item
 
 - name: "Set `artifact_id` variable from `artifact_id_parent`"
   set_fact:
