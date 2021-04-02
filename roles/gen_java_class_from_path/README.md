@@ -8,6 +8,8 @@ From the package definition a path for java class is constructed.
 So the location of java templates play no role to construct a path. 
 Only the package definition is responsible for it.
 
+Java test templates, must end wither with `Test.java.j2` or with `IT.java.j2`.
+
 For other types of template, which do not end with '.java.j2', 
 the destination path is constructed according to its relative path 
 in the `cs_gjcfp_templates.src` folder.
