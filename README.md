@@ -12,6 +12,10 @@ Make sure your Ansible projects have `ansible.cfg` file `~/.ansible/common_roles
 roles_path=roles:~/.ansible/common_roles
 ```
 
+For each change in commons role, to make them visible run:
+
+`./scripts/extendScripsAndAnsibleRolesPaths.sh`
+
 ### Features:
 
 - [Change the current folder to the Ansible directory](#change-the-current-folder-to-the-ansible-directory)
@@ -62,6 +66,14 @@ ansible-playbook \
   playbooks/somePlaybook.yaml
 ```
 
+Note: you could run an Ansible role without a playbook file:
+```bash
+#running role directly without playbook
+ansible localhost -v \
+  --module-name include_role \
+  --args name=some_role_name \
+  --extra-vars "${extra_vars} app_basedir=$app_basedir"
+```
 
 #### To insert one template after another
 

@@ -27,6 +27,7 @@
       java_dst: "{{ cs_gjcfp_templates.dst_src_path }}/src/test/java/{{ actual_package | replace('.', '/') }}"
     when: cs_gjcfp_file_2_handle.src.endswith('Test.java.j2')
       or cs_gjcfp_file_2_handle.src.endswith('IT.java.j2')
+      or cs_gjcfp_file_2_handle.src is search("src/test")
 
   - debug:
       msg:
