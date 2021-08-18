@@ -1,20 +1,29 @@
-### Requirements
+**Please note:**
 
-To be able to use bash scripts and Ansible common roles in other projects, run:
+For each change in this Ansible Commons Role project, update all installed roles and scripts with:
 
 `./scripts/extendScripsAndAnsibleRolesPaths.sh`
 
-from the `ansible-commons-roles` folder
+### Requirements for usage:
 
-Make sure your Ansible projects have `ansible.cfg` file `~/.ansible/common_roles` included:
+1. To install scripts and Ansible common roles available for other projects, 
+    run from the `ansible-commons-roles` folder
+    (or if it was renamed from the parent folder of `ansible-commons-roles` project):
+
+```
+./scripts/extendScripsAndAnsibleRolesPaths.sh
+```
+
+This `extendScripsAndAnsibleRolesPaths.sh` script creates the required files in the user's home folder: `~/.ansible`
+
+Ansible common roles are stored in `~/.ansible/common_roles`
+
+2. To make Ansible common roles available for other code-generation projects
+    add `.ansible.cfg` file into the root folder of your Ansible code-generation project with the following content:
 ```yaml
 [defaults]
 roles_path=roles:~/.ansible/common_roles
 ```
-
-For each change in commons role, to make them visible run:
-
-`./scripts/extendScripsAndAnsibleRolesPaths.sh`
 
 ### Features:
 
