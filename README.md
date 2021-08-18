@@ -8,7 +8,7 @@ For each change in this Ansible Commons Role project, update all installed roles
 
 1. To install scripts and Ansible common roles available for other projects, 
     run from the `ansible-commons-roles` folder
-    (or if it was renamed from the parent folder of `ansible-commons-roles` project):
+    (or if it was renamed from the root folder of `ansible-commons-roles` project):
 
 ```
 ./scripts/extendScripsAndAnsibleRolesPaths.sh
